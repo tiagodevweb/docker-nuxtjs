@@ -1,0 +1,42 @@
+FROM node:lts-alpine3.14 AS BASE
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+FROM BASE AS BUILD
+
+RUN npm ci
+
+COPY . ./
+
+RUN npm run build
+
+FROM BASE AS PROD
+
+ENV NODE_ENV production
+
+COPY --from=BUILD /usr/src/app/.nuxt/ ./.nuxt/
+
+RUN npm ci --only=production && npm cache clean --force
+
+RUN npm prune --production
+
+COPY --chown=node:node . ./
+
+FROM BASE
+
+RUN apk --no-cache add dumb-init
+
+ENV NODE_ENV production
+
+COPY --from=PROD /usr/src/app/ ./
+
+ARG PORT 3000
+ENV NUXT_HOST 0.0.0.0
+ENV NUXT_PORT ${PORT}
+EXPOSE ${PORT}
+
+USER node
+
+CMD [ "dumb-init", "npm", "start" ]

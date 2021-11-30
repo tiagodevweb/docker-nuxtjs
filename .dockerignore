@@ -3,3 +3,9 @@ npm-debug.log
 .git
 .gitignore
 coverage
+.dockerignore
+.nuxt
+README.md
+jest.config.js
+cloudbuild.yml
+test

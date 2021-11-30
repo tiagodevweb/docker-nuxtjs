@@ -1,17 +1,14 @@
-version: "3.7"
+version: "3.8"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: app
     restart: unless-stopped
     command: npm run dev
     ports:
       - '3000:3000'
     volumes:
-      - ./:/app
-    networks:
-      - nuxt-network
-networks:
-  nuxt-network:
-    driver: bridge
+      - ./:/usr/src/app/
