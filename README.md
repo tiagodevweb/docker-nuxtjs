@@ -1,5 +1,7 @@
 # Dockerize Node 
 
+Node lab for development and production with docker and a Nuxt JS application.
+
 ## Requisitos
 
 - [Docker](https://docs.docker.com/get-docker/)
@@ -24,5 +26,5 @@ docker-compose logs app
 
 ## License
 
-[MIT license](https://opensource.org/licenses/MIT).
+The Dockerize Node is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
