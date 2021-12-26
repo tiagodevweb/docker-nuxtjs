@@ -4,12 +4,12 @@ services:
   app:
     build:
       context: .
-      target: dev-stage
+      target: development
     container_name: app
     restart: unless-stopped
     command: npm run dev
     ports:
       - '3000:3000'
     volumes:
-      - ./:/app/
-      - /app/node_modules
+      - ./:/usr/src/app/
+      - /usr/src/app/node_modules
