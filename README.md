@@ -9,6 +9,8 @@ Node lab for development and production with docker and a Nuxt JS application.
 
 ## Usage
 
+#### Development
+
 up container
 ```bash
 docker-compose up -d
@@ -19,7 +21,18 @@ docker-compose ps
 ```
 show container logs
 ```bash
-docker-compose logs app
+docker-compose logs
+```
+
+#### Production
+
+Build image
+```bash
+DOCKER_BUILDKIT=1 docker build -t <image-name> --target prod-stage .
+```
+Run container
+```bash
+docker run --rm -it -p 3000:3000 <image-name>
 ```
 
 [http://localhost:3000](http://localhost:3000).

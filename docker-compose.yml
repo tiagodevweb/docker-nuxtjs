@@ -4,12 +4,12 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      target: dev-stage
     container_name: app
     restart: unless-stopped
     command: npm run dev
     ports:
       - '3000:3000'
     volumes:
-      - ./:/usr/src/app/
-      - /usr/src/app/node_modules
+      - ./:/app/
+      - /app/node_modules
