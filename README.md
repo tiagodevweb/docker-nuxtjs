@@ -26,23 +26,23 @@ docker-compose logs
 
 #### Production
 
-Build image to universal
+Build universal image
 ```bash
 DOCKER_BUILDKIT=1 docker build -t <universal-image-name> --target production-universal .
 ```
 ```bash
 docker run --rm -it -p 3000:3000 <universal-image-name>
 ```
-[http://localhost:3000](http://localhost:3000).
+[http://localhost:3000](http://localhost:3000)
 
-Build image to static
+Build static image
 ```bash
 DOCKER_BUILDKIT=1 docker build -t <static-image-name> --target production-static .
 ```
 ```bash
 docker run --rm -it -p 80:80 <static-image-name>
 ```
-[http://localhost](http://localhost).
+[http://localhost](http://localhost)
 
 ## License
 

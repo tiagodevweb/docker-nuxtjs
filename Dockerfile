@@ -22,9 +22,12 @@ RUN     npm run generate
 # Image nginx:1.20.2-alpine
 FROM    nginx@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556 AS production-static
 # Fix CVE-2021-22945, CVE-2021-22946, CVE-2021-22947 and CVE-2021-40528
-RUN     apk add --no-cache "curl>=7.79.0-r0" "libgcrypt>=1.8.8-r1" openssl bash \
-        && rm -rf /usr/share/nginx/html/*
-COPY    --from=generate /usr/src/app/dist/* /usr/share/nginx/html/
+RUN     apk add --no-cache "curl>=7.79.0-r0" "libgcrypt>=1.8.8-r1" openssl \
+        && rm -rf /usr/share/nginx/html/* \
+        && touch /var/run/nginx.pid \
+        && chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
+COPY    --chown=nginx:nginx --from=generate /usr/src/app/dist/* /usr/share/nginx/html/
+USER    nginx
 EXPOSE  80/tcp 443/tcp
 
 FROM    base AS build
@@ -42,7 +45,7 @@ RUN     npm ci --only=production \
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 FROM    base AS production-universal
 ENV     NODE_ENV production
-RUN     apk add --no-cache tini libc6-compat
+RUN     apk add --no-cache tini libc6-compat bash
 COPY    --chown=node:node --from=build /usr/src/app/.nuxt ./.nuxt
 COPY    --chown=node:node --from=deps /usr/src/app/node_modules ./node_modules
 COPY    --chown=node:node . ./
