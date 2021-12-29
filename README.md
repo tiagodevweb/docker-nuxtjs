@@ -1,4 +1,4 @@
-# Dockerize Node 
+# Dockerize Nuxt JS 
 
 Node lab for development and production with docker and a Nuxt JS application.
 
@@ -26,18 +26,25 @@ docker-compose logs
 
 #### Production
 
-Build image
+Build image to universal
 ```bash
-DOCKER_BUILDKIT=1 docker build -t <image-name> --target prod-stage .
+DOCKER_BUILDKIT=1 docker build -t <universal-image-name> --target production-universal .
 ```
-Run container
 ```bash
-docker run --rm -it -p 3000:3000 <image-name>
+docker run --rm -it -p 3000:3000 <universal-image-name>
 ```
-
 [http://localhost:3000](http://localhost:3000).
+
+Build image to static
+```bash
+DOCKER_BUILDKIT=1 docker build -t <static-image-name> --target production-static .
+```
+```bash
+docker run --rm -it -p 80:80 <static-image-name>
+```
+[http://localhost](http://localhost).
 
 ## License
 
-The Dockerize Node is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Dockerize Nuxt JS is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
