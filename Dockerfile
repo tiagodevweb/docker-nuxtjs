@@ -45,7 +45,7 @@ RUN     npm ci --only=production \
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 FROM    base AS production-universal
 ENV     NODE_ENV production
-RUN     apk add --no-cache tini libc6-compat bash
+RUN     apk add --no-cache tini libc6-compat
 COPY    --chown=node:node --from=build /usr/src/app/.nuxt ./.nuxt
 COPY    --chown=node:node --from=deps /usr/src/app/node_modules ./node_modules
 COPY    --chown=node:node . ./
