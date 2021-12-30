@@ -11,25 +11,6 @@ ENV     NODE_ENV development
 RUN     npm i
 COPY    . ./
 
-FROM    base AS generate
-RUN     npm ci
-COPY    . ./
-RUN     npm run generate
-
-# Serves static files with nginx in case of a SPA project, 
-# it is necessary to set target as static in nuxt.config.js
-# https://nuxtjs.org/docs/features/deployment-targets/
-# Image nginx:1.20.2-alpine
-FROM    nginx@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556 AS production-static
-# Fix CVE-2021-22945, CVE-2021-22946, CVE-2021-22947 and CVE-2021-40528
-RUN     apk add --no-cache "curl>=7.79.0-r0" "libgcrypt>=1.8.8-r1" openssl \
-        && rm -rf /usr/share/nginx/html/* \
-        && touch /var/run/nginx.pid \
-        && chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
-COPY    --chown=nginx:nginx --from=generate /usr/src/app/dist/* /usr/share/nginx/html/
-USER    nginx
-EXPOSE  80/tcp 443/tcp
-
 FROM    base AS build
 RUN     npm ci
 COPY    . ./
@@ -50,3 +31,20 @@ COPY    --chown=node:node --from=build /usr/src/app/.nuxt ./.nuxt
 COPY    --chown=node:node --from=deps /usr/src/app/node_modules ./node_modules
 USER    node
 CMD     [ "/sbin/tini", "--", "npm", "start" ]
+
+FROM    build AS generate
+RUN     npm run generate
+
+# Serves static files with nginx in case of a SPA project, 
+# it is necessary to set target as static in nuxt.config.js
+# https://nuxtjs.org/docs/features/deployment-targets/
+# Image nginx:1.20.2-alpine
+FROM    nginx@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556 AS production-static
+# Fix CVE-2021-22945, CVE-2021-22946, CVE-2021-22947 and CVE-2021-40528
+RUN     apk add --no-cache "curl>=7.79.0-r0" "libgcrypt>=1.8.8-r1" openssl \
+        && rm -rf /usr/share/nginx/html/* \
+        && touch /var/run/nginx.pid \
+        && chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
+COPY    --chown=nginx:nginx --from=generate /usr/src/app/dist/* /usr/share/nginx/html/
+USER    nginx
+EXPOSE  80/tcp 443/tcp

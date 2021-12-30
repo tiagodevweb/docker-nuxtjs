@@ -7,5 +7,4 @@ coverage
 .nuxt
 README.md
 jest.config.js
-cloudbuild.yml
 test
