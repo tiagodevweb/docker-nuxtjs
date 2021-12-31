@@ -45,6 +45,8 @@ RUN     apk add --no-cache "curl>=7.79.0-r0" "libgcrypt>=1.8.8-r1" openssl \
         && rm -rf /usr/share/nginx/html/* \
         && touch /var/run/nginx.pid \
         && chown -R nginx:nginx /var/cache/nginx /var/run/nginx.pid
+# You only need to copy nginx.conf if you are NOT using the default configuration
+#COPY    nginx.conf /etc/nginx/nginx.conf
 COPY    --chown=nginx:nginx --from=generate /usr/src/app/dist/* /usr/share/nginx/html/
 USER    nginx
 EXPOSE  80/tcp 443/tcp
