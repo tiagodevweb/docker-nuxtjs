@@ -1,4 +1,4 @@
-# Dockerize Nuxt JS 
+# Docker Nuxt JS 
 
 Node lab for development and production with docker and a Nuxt JS application.
 
@@ -46,5 +46,5 @@ docker run --rm -it -p 80:80 <static-image-name>
 
 ## License
 
-The Dockerize Nuxt JS is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Docker Nuxt JS is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
