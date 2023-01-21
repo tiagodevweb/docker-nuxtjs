@@ -20,7 +20,7 @@ FROM    base AS deps
 ENV     NODE_ENV production
 RUN     npm ci --only=production \
         && npm cache clean --force \
-        && npm prune --production --dry-run
+        && npm prune --dry-run
 
 # Check https://github.com/krallin/tini#why-tini
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
